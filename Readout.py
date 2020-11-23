@@ -10,6 +10,8 @@ import pickle
 import scipy.io
 
 
+#Use for N=4 (Inserted method gets recognized by having size like N=3)
+
 
 def BinaryToDecimal(S,length):
     result=0
