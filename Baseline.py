@@ -22,12 +22,7 @@ import dwave.inspector
 import pickle
 
 
-N=4
-#b= np.random.uniform(-1,1,N)
-#Q= np.random.uniform(-1,1,(N,N))
 
-W= np.random.uniform(-1,1,(N**2, N**2) )
-c= np.random.uniform(-1,1,( N**2,1) )
 
 def baseline(N,W,c): 
     
@@ -52,7 +47,7 @@ def baseline(N,W,c):
     
     MaxGrad= np.max(optimizing)
     
-    # zeilen- und reihenweise optimierung:
+    # column and row-wise optimization
     Lambdaj=  np.zeros((2,N))
         
     
@@ -102,7 +97,6 @@ def baseline(N,W,c):
     Q= W/4 
     
     qu= c/2 + (np.sum( W, axis=0, keepdims= True ).T + np.sum(W,axis= 1, keepdims=True) )/4
-    #PLUS OR MINUS
     
     for i in range(0,N**2):
         Q[i,i]=0
@@ -150,23 +144,18 @@ def baseline(N,W,c):
     
     
     
-    chainValues=1
 
     chain = np.max (bias)
 
-    for t in range(chainValues):
-        sampler = EmbeddingComposite(DWaveSampler())
-        response = sampler.sample_ising(bias,J,chain_strength=chain ,num_reads=500, return_embedding=True, anneal_schedule=((0.0,0.0),(40.0,0.5),(140.0,0.5),(180.0,1.0)))
-       
-        dwave.inspector.show(response)
-        Result=[]
-        for datum in response.data(['sample', 'energy', 'num_occurrences','chain_break_fraction']):   
-                print(datum.sample, "Energy: ", datum.energy, "Occurrences: ", datum.num_occurrences)
-                Result.append([datum.sample,  datum.energy,  datum.num_occurrences, datum.chain_break_fraction])
-    
-        #Result.append(response.info)
-        #Save.append(Result)
-            #print('hallo')
+    sampler = EmbeddingComposite(DWaveSampler())
+    response = sampler.sample_ising(bias,J,chain_strength=chain ,num_reads=500, return_embedding=True, anneal_schedule=((0.0,0.0),(40.0,0.5),(140.0,0.5),(180.0,1.0)))
+
+    dwave.inspector.show(response)
+    Result=[]
+    for datum in response.data(['sample', 'energy', 'num_occurrences','chain_break_fraction']):   
+            print(datum.sample, "Energy: ", datum.energy, "Occurrences: ", datum.num_occurrences)
+            Result.append([datum.sample,  datum.energy,  datum.num_occurrences, datum.chain_break_fraction])
+
     return [Result,response.info,SimulatedResult]
 
 
