@@ -10,7 +10,6 @@ import pickle
 import scipy.io
 
 
-#Use for N=4 (Inserted method gets recognized by having size like N=3)
 
 
 def BinaryToDecimal(S,length):
@@ -106,12 +105,14 @@ def IntToVector( number ,length ):
         
     return np.array( result)
 
-
+#Use for N=4 (Inserted method gets recognized by having size like N=3)
+NnotInserted=4 
+NInserted= NnotInserted-1
 
 #pickle.dump([Qneu,quneu], open( "save.p", "wb" ))
-color = pickle.load( open( "stateHist.p", "rb" ) )
+Everything = pickle.load( open( "stateHist.p", "rb" ) )
 
-Instances=10
+Instances=len(Everything)
 chainResults=[]
 
 Wmatrices=[]
@@ -120,7 +121,7 @@ cvectors=[]
 for chain in range(Instances):
 
 
-    ReadOutAll= color[chain]
+    ReadOutAll= Everything[chain]
     
     W= ReadOutAll[0]
     c= ReadOutAll[1]
@@ -166,10 +167,10 @@ for chain in range(Instances):
                     Information[j,0]= BinaryToDecimal( Liste[j][0],N)
                     Information[j,1]= Liste[j][1]
                     Information[j,2]= Liste[j][2]
-                    if N==16:
+                    if N==NnotInserted**2:
                         Information[j,3]=application(  IntToVector(  Information[j,0],N), W,c.T) 
-                    if N==9:
-                        Information[j,3]=application(  CouldBePermutation(  Information[j,0],16)[0], W,c.T) 
+                    if N==NInserted**2:
+                        Information[j,3]=application(  CouldBePermutation(  Information[j,0],NnotInserted**2)[0], W,c.T) 
                     Information[j,4]= Liste[j][3]
             Results.append(Information)
     chainResults.append(Results)
@@ -239,8 +240,7 @@ for element in chainResults:
         MostProbable=[0,0]
         for k in range(Results[j].shape[0]):
             
-          #  Results[j][k,3]=application( IntToVector( Results[j][k,0],9), W,c.T) 
-          #  Results[j][k,4]= Results[j][k,3] - Results[j][k,1]
+        
             if j >0 :
                 if isPermutation(Results[j][k][0],N**2 ):
       
@@ -260,7 +260,7 @@ for element in chainResults:
                     
                         
             if j==0:
-                if CouldBePermutation(  Results[j][k][0],16)[1] ==True:
+                if CouldBePermutation(  Results[j][k][0],NnotInserted**2)[1] ==True:
                         
                     AverageWc+=  Results[j][k,3] * Results[j][k,2]  /shots
                     
@@ -281,7 +281,7 @@ for element in chainResults:
             print(True)
             
         else:
-            print(False)#Consider as error message. For the dataset, where this exact code was used this was allways true
+            print(False)
             
             coincidesWithOptimum=0
         Averages[0,j]=AverageWc
