@@ -81,7 +81,6 @@ def rowwise(N,W,c):
     Q= W/4 
     
     qu= c/2 + (np.sum( W, axis=0, keepdims= True ).T + np.sum(W,axis= 1, keepdims=True) )/4
-    #PLUS OR MINUS
     
     for i in range(0,N**2):
         Q[i,i]=0
@@ -134,23 +133,19 @@ def rowwise(N,W,c):
 
     
     
-    chainValues=1
+   
 
-    #Save=[]
 
     chain = np.max (bias)
 
-    for t in range(chainValues):
-        sampler = EmbeddingComposite(DWaveSampler())
-        response = sampler.sample_ising(bias,J,chain_strength=chain  ,num_reads=500, return_embedding=True,anneal_schedule=((0.0,0.0),(40.0,0.5),(140.0,0.5),(180.0,1.0)))
-       
-        dwave.inspector.show(response)
-        Result=[]
-        for datum in response.data(['sample', 'energy', 'num_occurrences','chain_break_fraction']):   
-                print(datum.sample, "Energy: ", datum.energy, "Occurrences: ", datum.num_occurrences)
-                Result.append([datum.sample,  datum.energy,  datum.num_occurrences, datum.chain_break_fraction])
-    
-        #Result.append(response.info)
-        #Save.append(Result)
-            #print('hallo')
+
+    sampler = EmbeddingComposite(DWaveSampler())
+    response = sampler.sample_ising(bias,J,chain_strength=chain  ,num_reads=500, return_embedding=True,anneal_schedule=((0.0,0.0),(40.0,0.5),(140.0,0.5),(180.0,1.0)))
+
+    dwave.inspector.show(response)
+    Result=[]
+    for datum in response.data(['sample', 'energy', 'num_occurrences','chain_break_fraction']):   
+            print(datum.sample, "Energy: ", datum.energy, "Occurrences: ", datum.num_occurrences)
+            Result.append([datum.sample,  datum.energy,  datum.num_occurrences, datum.chain_break_fraction])
+
     return [Result,response.info,SimulatedResult]
