@@ -56,7 +56,8 @@ def rowwise(N,W,c):
         
     regularisationMatrix= np.zeros((N**2,N**2 ))
     regularisationVector= np.zeros((N**2,1 ))
-    LambdaValues=10
+    
+
     
     
     for i in range(N):
