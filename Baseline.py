@@ -35,24 +35,8 @@ def baseline(N,W,c):
           lambdaconst+=np.abs(c[k])
     lambdaconst= lambdaconst/2   
     
-    optimizing=np.zeros(N**2)
+   
     
-    for k in range(N**2):
-        optimizing[k]+= -np.abs(W[k,k]) + np.abs(c[k]) #Minus because in the next line we get += 2W[k,k]
-        for i in range(N**2):
-        
-            optimizing[k]+=np.abs( W[k,i]+ W[i,k])
-    
-    
-    
-    MaxGrad= np.max(optimizing)
-    
-    # column and row-wise optimization
-    Lambdaj=  np.zeros((2,N))
-        
-    
-    
-    qu= c/2 + (np.sum( W, axis=0, keepdims= True ).T + np.sum(W,axis= 1, keepdims=True) )/4
     columnSum= np.zeros((N**2,N))
     rowSum= np.zeros((N**2,N))
     for i in range(N):
@@ -64,9 +48,7 @@ def baseline(N,W,c):
                 if i==k:
                     rowSum[N*i+j,k]=1
     
-    for j in range(N):
-        Lambdaj[0,j]= np.max(optimizing* columnSum[:,j])
-        Lambdaj[1,j]= np.max(optimizing* rowSum[:,j])
+   
       
       
         
