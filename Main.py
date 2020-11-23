@@ -13,8 +13,8 @@ import numpy as np
 
 import pickle
 
-import scipy.io
-mat = scipy.io.loadmat('NVier.mat')
+#import scipy.io        If one wants to load specific problem instances:
+#mat = scipy.io.loadmat('NVier.mat')
 
 
 
