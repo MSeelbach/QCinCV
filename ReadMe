@@ -1,0 +1,2 @@
+This is the programm code for the experiments in the 3DV publication 'Adiabatic Quantum Graph Matching with Permutation Matrix Constraints' in http://gvv.mpi-inf.mpg.de/projects/QGM.
+You can run the code with D-Wave leap: https://www.dwavesys.com/take-leap. Running the main file performs experiments with 10 problem instances and saves the results. With readout one can generate a plot of the results.
